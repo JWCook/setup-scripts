@@ -4,7 +4,6 @@
 
 install-portable-packages: \
     install-cargo-packages \
-    install-fonts \
     install-fzf \
     install-grc \
     install-npm-packages \
@@ -28,7 +27,6 @@ update: \
 install-fedora: \
     install-system-packages-fedora-gnome \
     install-portable-packages \
-    install-vim-plug \
     install-ssh-agent-systemd
     # install-retroterm-fedora \
     # install-chrome-fedora \
@@ -49,16 +47,7 @@ install-ubuntu-wsl: \
     install-system-packages-ubuntu-wsl \
     install-portable-packages \
     init-ssh-conf \
-    configure-fonts-wsl \
-    configure-sudoers
-	rm -f ~/.bashrc_wsl
-	ln -s `pwd`/bash/bashrc_wsl ~/.bashrc_wsl
-	rm -f ~/.config/fish/config_wsl.fish
-	ln -s `pwd`/fish/config_wsl.fish ~/.config/fish/config_wsl.fish
-	test -d /mnt/c/Workspace && ln -s /mnt/c/Workspace ~/workspace
-	test -d /mnt/d/Workspace && ln -s /mnt/d/Workspace ~/workspace
-	test -d /mnt/d/NextCloud  && ln -s /mnt/d/NextCloud/ ~/NextCloud/
-	test -d /mnt/e/Downloads && rmdir ~/Downloads && ln -s /mnt/e/Downloads ~/Downloads
+    install-xfce-superkey \
 	scripts/init_gnome_keyring.sh
 	# See: https://github.com/dnschneid/crouton/wiki/Fix-error-while-loading-shared-libraries:-libQt5Core.so.5
 	sudo strip --remove-section=.note.ABI-tag  /usr/lib/x86_64-linux-gnu/libQt5Core.so.5
@@ -70,7 +59,6 @@ update-ubuntu: update
 
 # Minimal config + packages for Raspberry Pi (headless)
 install-rpi: install-python-tools
-	scripts/install_vim_plug.sh
 	scripts/rpi/install_system_packages.sh
 
 
@@ -82,7 +70,7 @@ install-rpi: install-python-tools
 init-ssh-conf:
 	mkdir -p ~/.ssh
 	cp ssh/config ~/.ssh/
-	source bash/bashrc && ssh-set-permissions
+	source ~/.bashrc && ssh-set-permissions
 
 ############################
 # Packages: Cross-Platform #
@@ -90,9 +78,6 @@ init-ssh-conf:
 
 install-cargo-packages:
 	scripts/install_cargo_packages.sh
-
-install-fonts:
-	scripts/install_fonts.sh
 
 install-fzf:
 	scripts/git/install_fzf.sh
@@ -121,8 +106,12 @@ install-ssh-agent-systemd:
 install-vim:
 	scripts/git/install_vim.sh
 
-install-vim-plug:
-	scripts/install_vim_plug.sh
+install-xfce-superkey:
+	scripts/git/install_xfce_superkey.sh
+
+
+# Updates
+# -------
 
 update-cargo: install-cargo-packages
 
