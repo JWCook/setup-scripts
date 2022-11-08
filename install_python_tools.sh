@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 FISH_COMPLETE_DEST=~/.config/fish/completions/poetry.fish
 BASH_COMPLETE_DEST=~/.config/bash/completions/poetry.bash-completion
-BOOTSTRAPS=scripts/bootstrap
+BOOTSTRAPS=bootstrap
+VF_REQUIREMENTS=~/.virtualenvs/global_requirements.txt
 
 # Python versions to install and activate with pyenv
 # Note: The first version in list will be used as the default 'python3' version
@@ -11,11 +12,10 @@ PYTHON_VERSIONS='
     3.7.13
     3.8.13
     3.9.13
-    3.10.6
+    3.10.8
 '
 
-source bash/bashrc
-source bash/bashrc_style
+source ~/bashrc
 
 # Use -u (upgrade) to only install new python versions if missing
 PYENV_OPTS='-f'
@@ -39,10 +39,6 @@ if test -z $UPDATE_ONLY; then
     curl -L http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o $BOOTSTRAPS/get-miniconda.sh
 fi
 
-# Ensure we have the latest pip (usually only necessary if current pip is broken)
-print-title 'Installing/updating pip'
-python3 $BOOTSTRAPS/get-pip.py
-
 # Install pyenv
 print-title 'Installing/updating pyenv'
 if cmd-exists pyenv; then
@@ -64,6 +60,10 @@ done
 pyenv global $PYTHON_VERSIONS
 python3 --version
 
+# Ensure we have the latest pip (usually only necessary if current pip is broken)
+print-title 'Installing/updating pip'
+python3 $BOOTSTRAPS/get-pip.py
+
 # Install poetry
 print-title 'Installing/updating poetry'
 if cmd-exists poetry; then
@@ -81,25 +81,26 @@ bash -c "poetry completions bash > $BASH_COMPLETE_DEST"
 fish -c "poetry completions fish > $FISH_COMPLETE_DEST"
 
 # Install miniconda
-print-title 'Installing/updating miniconda'
-if cmd-exists conda; then
-    conda update --yes conda conda-build python
-else
-    bash $BOOTSTRAPS/get-miniconda.sh -b -p ~/.miniconda
-    pathadd ~/.miniconda/bin
-    conda update --yes conda python
-    conda install -y conda-build
-fi
+# print-title 'Installing/updating miniconda'
+# if cmd-exists conda; then
+#     conda update --yes conda conda-build python
+# else
+#     bash $BOOTSTRAPS/get-miniconda.sh -b -p ~/.miniconda
+#     pathadd ~/.miniconda/bin
+#     conda update --yes conda python
+#     conda install -y conda-build
+# fi
 
-# Install some user-level site-packages
+# Install some user-level packages
 print-title 'Installing/updating user packages'
-python3.10 -m pip install --user -Ur scripts/requirements-user.txt
+pip install --user -Ur requirements-user.txt
+source $(which virtualenvwrapper.sh)
 
 # Install or update some python CLI tools with pipx
 if test -z $UPDATE_ONLY; then
     while read package; do
         pipx install $package
-    done < scripts/requirements-pipx.txt
+    done < requirements-pipx.txt
 else
     pipx upgrade-all
 fi
@@ -107,8 +108,10 @@ fi
 
 # Make virtualenv for neovim
 if ! lsvirtualenv | grep -q nvim; then
-    source $(which virtualenvwrapper.sh)
     mkvirtualenv nvim
     pip install -U pip jedi pynvim vim-vint
     deactivate
 fi
+
+# Link packages to install for every new virtualenv
+ln -s $(pwd)/requirements-virtualenvs.txt $VF_REQUIREMENTS
