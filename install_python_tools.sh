@@ -7,15 +7,15 @@ VF_REQUIREMENTS=~/.virtualenvs/global_requirements.txt
 # Python versions to install and activate with pyenv
 # Note: The first version in list will be used as the default 'python3' version
 PYTHON_VERSIONS='
-    3.11.0
-    3.6.15
-    3.7.13
-    3.8.13
-    3.9.13
-    3.10.8
+    3.11
+    3.6
+    3.7
+    3.8
+    3.9
+    3.10
 '
 
-source ~/bashrc
+source ~/dotfiles/bash/bashrc
 
 # Use -u (upgrade) to only install new python versions if missing
 PYENV_OPTS='-f'
@@ -58,11 +58,11 @@ for version in $PYTHON_VERSIONS; do
     pyenv install $PYENV_OPTS $version
 done
 pyenv global $PYTHON_VERSIONS
-python3 --version
+which python && python --version
 
 # Ensure we have the latest pip (usually only necessary if current pip is broken)
 print-title 'Installing/updating pip'
-python3 $BOOTSTRAPS/get-pip.py
+python $BOOTSTRAPS/get-pip.py
 
 # Install poetry
 print-title 'Installing/updating poetry'

@@ -48,7 +48,7 @@ install-ubuntu-wsl: \
     install-portable-packages \
     init-ssh-conf \
     install-xfce-superkey \
-	scripts/init_gnome_keyring.sh
+	./init_gnome_keyring.sh
 	# See: https://github.com/dnschneid/crouton/wiki/Fix-error-while-loading-shared-libraries:-libQt5Core.so.5
 	sudo strip --remove-section=.note.ABI-tag  /usr/lib/x86_64-linux-gnu/libQt5Core.so.5
 	# WIP: Set up host Firefox to allow opening browser from links in WSL
@@ -59,7 +59,7 @@ update-ubuntu: update
 
 # Minimal config + packages for Raspberry Pi (headless)
 install-rpi: install-python-tools
-	scripts/rpi/install_system_packages.sh
+	./rpi/install_system_packages.sh
 
 
 #########################
@@ -70,44 +70,44 @@ install-rpi: install-python-tools
 init-ssh-conf:
 	mkdir -p ~/.ssh
 	cp ssh/config ~/.ssh/
-	source ~/.bashrc && ssh-set-permissions
+	source ~/dotfiles/bash/bashrc && ssh-set-permissions
 
 ############################
 # Packages: Cross-Platform #
 ############################
 
 install-cargo-packages:
-	scripts/install_cargo_packages.sh
+	./install_cargo_packages.sh
 
 install-fzf:
-	scripts/git/install_fzf.sh
+	./git/install_fzf.sh
 
 install-grc:
-	scripts/git/install_grc.sh
+	./git/install_grc.sh
 
 install-npm-packages:
-	scripts/install_npm_packages.sh
+	./install_npm_packages.sh
 
 install-poetry:
-	scripts/install_poetry.sh
+	./install_poetry.sh
 
 install-pyenv:
-	scripts/install_pyenv.sh
+	./install_pyenv.sh
 
 install-python-tools:
-	scripts/install_python_tools.sh
+	./install_python_tools.sh
 
 install-ruby-gems:
-	sudo gem install -g scripts/Gemfile
+	sudo gem install -g ./Gemfile
 
 install-ssh-agent-systemd:
-	scripts/install_ssh_agent_systemd.sh
+	./install_ssh_agent_systemd.sh
 
 install-vim:
-	scripts/git/install_vim.sh
+	./git/install_vim.sh
 
 install-xfce-superkey:
-	scripts/git/install_xfce_superkey.sh
+	./git/install_xfce_superkey.sh
 
 
 # Updates
@@ -120,7 +120,7 @@ update-grc: install-grc
 update-npm: install-npm-packages
 
 update-python:
-	scripts/install_python_tools.sh -u
+	./install_python_tools.sh -u
 
 update-ruby:
 	sudo gem update
@@ -129,14 +129,14 @@ update-tldr:
 	- tldr --update
 
 update-vim:
-	scripts/install_vim.sh
+	./install_vim.sh
 
 update-git-repos:
-	scripts/git/install_fzf.sh
-	scripts/git/install_grc.sh
-	scripts/git/install_retroterm.sh
-	scripts/git/install_vim.sh
-	scripts/git/install_xfce_superkey.sh
+	./git/install_fzf.sh
+	./git/install_grc.sh
+	./git/install_retroterm.sh
+	./git/install_vim.sh
+	./git/install_xfce_superkey.sh
 
 
 ####################
@@ -144,27 +144,27 @@ update-git-repos:
 ####################
 
 install-system-packages-fedora-gnome:
-	sudo scripts/fedora/install_system_packages.sh -r -g -n
+	sudo ./fedora/install_system_packages.sh -r -g -n
 
 install-system-packages-fedora-xfce:
-	sudo scripts/fedora/install_system_packages.sh -r -g -x
+	sudo ./fedora/install_system_packages.sh -r -g -x
 
 install-system-packages-fedora-headless:
-	sudo scripts/fedora/install_system_packages.sh -r
+	sudo ./fedora/install_system_packages.sh -r
 
 reinstall-system-packages-fedora:
-	sudo scripts/fedora/install_system_packages.sh
+	sudo ./fedora/install_system_packages.sh
 
 install-vim-fedora:
-	scripts/fedora/install_vim_prereqs.sh
-	scripts/install_vim.sh
+	./fedora/install_vim_prereqs.sh
+	./install_vim.sh
 
 install-chrome-fedora:
-	sudo scripts/fedora/install_chrome.sh
+	sudo ./fedora/install_chrome.sh
 
 install-retroterm-fedora:
-	scripts/fedora/install_retroterm_prereqs.sh
-	scripts/git/install_retroterm.sh
+	./fedora/install_retroterm_prereqs.sh
+	./git/install_retroterm.sh
 
 
 #####################
@@ -172,25 +172,25 @@ install-retroterm-fedora:
 #####################
 
 install-system-packages-ubuntu:
-	sudo scripts/ubuntu/install_system_packages.sh -r -g
+	sudo ./ubuntu/install_system_packages.sh -r -g
 
 install-system-packages-ubuntu-wsl:
-	sudo scripts/ubuntu/install_system_packages.sh -r -w
+	sudo ./ubuntu/install_system_packages.sh -r -w
 
 reinstall-system-packages-ubuntu:
-	sudo scripts/ubuntu/install_system_packages.sh
+	sudo ./ubuntu/install_system_packages.sh
 
 install-vim-ubuntu:
-	scripts/ubuntu/install_vim_prereqs.sh
-	scripts/install_vim.sh
-	scripts/install_vim_plug.sh
+	./ubuntu/install_vim_prereqs.sh
+	./install_vim.sh
+	./install_vim_plug.sh
 
 install-chrome-ubuntu:
-	sudo scripts/ubuntu/install_chrome.sh
+	sudo ./ubuntu/install_chrome.sh
 
 install-duplicati-ubuntu:
-	scripts/ubuntu/install_duplicati.sh
+	./ubuntu/install_duplicati.sh
 
 install-retroterm-ubuntu:
-	scripts/ubuntu/install_retroterm_prereqs.sh
-	scripts/git/install_retroterm.sh
+	./ubuntu/install_retroterm_prereqs.sh
+	./git/install_retroterm.sh

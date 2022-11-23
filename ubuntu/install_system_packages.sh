@@ -17,10 +17,10 @@ set -o nounset
 function install_repos() {
     echo 'Installing apt repositories'
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-    #curl -fsSL https://packagecloud.io/AtomEditor/atom/gpgkey | apt-key add -
     apt-add-repository ppa:fish-shell/release-3
-    add-apt-repository ppa:phoerious/keepassxc
+  o add-apt-repository ppa:neovim-ppa/stable
     add-apt-repository ppa:nextcloud-devs/client
+    add-apt-repository ppa:phoerious/keepassxc
     echo \
  	"deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
   	$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
@@ -35,7 +35,6 @@ function install_repos() {
 PKGS_APPS='
     bat
     cargo
-    copyq
     curl
     feh
     figlet
@@ -44,6 +43,7 @@ PKGS_APPS='
     htop
     jq
     ncdu
+    neovim
     net-tools
     nmap
     neofetch
@@ -73,6 +73,7 @@ PKGS_APPS='
 PKGS_GUI_APPS='
     chromium-browser
     chromium-codecs-ffmpeg-extra
+    copyq
     gimp
     grub-customizer
     guake
@@ -86,6 +87,7 @@ PKGS_LIBS='
     build-essential
     cmake
     exuberant-ctags
+    golang
     graphviz-dev
     libbz2-dev
     libffi-dev
@@ -144,9 +146,7 @@ PKGS_SNAP='
     ffmpeg
 '
 PKGS_SNAP_CLASSIC='
-    atom
     code
-    nvim
 '
 #pycharm-community
 # Additional packages for WSL
@@ -182,6 +182,3 @@ sudo snap install $PKGS_SNAP
 for pkg in $PKGS_SNAP_CLASSIC; do
     sudo snap install $pkg --classic
 done
-
-# Symlink neovim snap location to standard system location
-sudo ln -s /snap/bin/nvim /usr/bin/nvim

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # TODO: better method of handling global npm packages?
 
-BOOTSTRAPS=scripts/bootstrap
+BOOTSTRAPS=bootstrap
 NVM_SCRIPT_URL='https://raw.githubusercontent.com/creationix/nvm/master/install.sh'
-NODE_VERSION=16
+NODE_VERSION=19
 
 PKGS_JS='
     neovim
