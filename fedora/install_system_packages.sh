@@ -107,6 +107,7 @@ PKGS_LIBS='
     gcc
     gcc-c++
     graphviz-devel
+    golang
     java-latest-openjdk
     kernel-devel
     libX11-devel
